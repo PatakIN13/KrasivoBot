@@ -8,3 +8,22 @@ profile = "black"
 [tool.mypy]
 python_version = "3.9"
 ignore_missing_imports = true
+
+[tool.poetry]
+name = "krasivobot"
+version = "0.1.0"
+description = ""
+authors = ["PatakIN <git@patakin.space>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+aiogram = "^3.6.0"
+bleach = "^6.1.0"
+pydantic-settings = "^2.2.1"
+pydantic = "^2.7.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
