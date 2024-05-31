@@ -1,0 +1,53 @@
+pipeline {
+    agent {
+    label 'Prod'
+    }
+    stages {
+        stage('Create db.env file') {
+            steps {
+                script {
+                    sh '''
+                        echo "TELEGRAM_TOKEN=${TELEGRAM_TOKEN}" > .env
+                    '''
+                }
+            }
+        }
+        stage('Create docker-compose file') {
+            steps {
+                sh '''
+                    cat <<EOF > docker-compose.yml
+version: "3.7"
+services:
+  krasivo_bot:
+    container_name: krasivo_bot
+    image: ${REGISTRY}/${image}
+    build: .
+    env_file:
+      - .env
+EOF
+                '''
+            }
+        }
+        stage('Pull Latest Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry("http://${REGISTRY}", "${registryCredential}") {
+                        docker.image("${REGISTRY}/${image}").pull()
+                    }
+                }
+            }
+        }
+        stage('Run Docker Compose') {
+            steps {
+                script {
+                    sh 'docker compose up -d'
+                }
+            }
+        }
+    }
+    post {
+        always {
+            sh 'docker system prune -f'
+        }
+    }
+}
