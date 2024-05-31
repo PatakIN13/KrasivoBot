@@ -1,0 +1,7 @@
+version: "3.7"
+services:
+  krasivo_bot:
+    container_name: krasivo_bot
+    build: .
+    env_file:
+      - .env
