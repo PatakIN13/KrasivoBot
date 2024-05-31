@@ -1,22 +1,21 @@
 import logging
-from os import environ
+import asyncio
 
-from aiogram import Bot, Dispatcher, executor
+from aiogram import Bot, Dispatcher
 
-from krasivo_bot.config import Config
-from krasivo_bot.handlers import inline_krasivo_text_handler
+from krasivo_bot.config import config
+from krasivo_bot.handlers import router
 
 
 def main():
     logging.basicConfig(level=logging.INFO)
-    config = Config(telegram_token=environ["TELEGRAM_TOKEN"])
 
-    bot = Bot(token=config.telegram_token, parse_mode="HTML")
-    dp = Dispatcher(bot)
+    dp = Dispatcher()
+    bot = Bot(token=config.telegram_token)
 
-    dp.register_inline_handler(inline_krasivo_text_handler)
+    dp.include_router(router)
 
-    executor.start_polling(dp, skip_updates=True)
+    dp.run_polling(bot)
 
 
 if __name__ == "__main__":

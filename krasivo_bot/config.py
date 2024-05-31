@@ -1,5 +1,10 @@
-from typing import NamedTuple
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class Config(NamedTuple):
-    telegram_token: str
+class Config(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+
+    telegram_token: str = ""
+
+
+config = Config()

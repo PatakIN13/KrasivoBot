@@ -18,7 +18,7 @@ ladder_regex = re.compile(r"\[(?P<escop>\[)?(?P<content>[^\]]+)\]")
 
 def krasivo_transformer(text: str) -> str:
     krasivo_text = " ".join([ch.upper() for ch in text if ch.isalnum()])
-    return markdown.hcode(krasivo_text)
+    return f"<code>{krasivo_text}</code>"
 
 
 def ladder_transformer(text: str) -> str:
